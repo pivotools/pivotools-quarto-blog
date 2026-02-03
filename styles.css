@@ -1,0 +1,56 @@
+/* css styles */
+
+/* Force listing title link to use semibold weight (overrides div.quarto-post a rule) */
+.listing-title a {
+    font-weight: 600;
+  }
+  
+  /* Add spacing between title and categories */
+  .listing-categories {
+    margin-top: 0.5rem;
+  }
+  
+  /* Center Plotly figures - fig-align doesn't work with Plotly HTML widgets */
+  /* Target Quarto figure containers */
+  .quarto-figure {
+    text-align: center;
+  }
+  
+  /* Center Plotly graph divs within figure containers */
+  .quarto-figure .plotly,
+  .quarto-figure .plotly-graph-div,
+  .cell-output-display .plotly,
+  .cell-output-display .plotly-graph-div {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  /* Ensure parent containers are also centered */
+  .cell-output-display {
+    text-align: center;
+  }
+  
+  /* Left-align figure captions (overrides text-align: center from .quarto-figure) */
+  .quarto-figure figcaption,
+  .quarto-float-caption {
+    text-align: left;
+  }
+  
+  /* Improve rendering quality for Plotly heatmaps to reduce moiré patterns */
+  /* Use crisp edges for SVG rendering to avoid anti-aliasing artifacts */
+  .plotly .js-plotly-plot .svg-container svg,
+  .plotly-graph-div .js-plotly-plot .svg-container svg {
+    shape-rendering: crispEdges;
+  }
+  
+  /* Alternative: use pixelated rendering for better pixel alignment */
+  /* Uncomment if crispEdges doesn't work well */
+  /* .plotly .js-plotly-plot .svg-container svg,
+  .plotly-graph-div .js-plotly-plot .svg-container svg {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  } */
+  

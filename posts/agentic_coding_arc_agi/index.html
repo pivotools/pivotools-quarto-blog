@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dibya Chakravorty, Debsankha Manik &amp; Bernhard Altaner">
+<meta name="dcterms.date" content="2026-02-02">
+
+<title>Agentic coding improves ARC AGI 2 performance across models – pivotools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d9b2e695b347dda434ecb1f6f285a4ab.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.0.1.min"</script>
+
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">pivotools</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Agentic coding improves ARC AGI 2 performance across models</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">arc-agi</div>
+                <div class="quarto-category">ai</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dibya Chakravorty, Debsankha Manik &amp; Bernhard Altaner </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 2, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>When reasoning models are given access to a Python read–eval–print loop (REPL), ARC AGI 2 performance jumps significantly relative to plain chain-of-thought (CoT). This happens generally across multiple models, both open-weight and commercial, with the same prompt. On the ARC AGI 2 public evaluation set, GPT OSS 120B High improves from 6.11% (plain CoT) to 26.38% (with REPL). Minimax M2.1, another open-weight model, improves from 3.06% to 10.56%. GPT 5.2 XHigh, a frontier model, goes from 59.81% to 73.36%. This suggests that agentic coding exposes additional fluid intelligence already present in these models, and that this capability can be harnessed by simply providing access to a REPL; no human engineering necessary.</p>
+<div id="cell-fig-baseline-interleaved-bars" class="cell" data-execution_count="2">
+<div id="fig-baseline-interleaved-bars" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-baseline-interleaved-bars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="5fc172a4-8993-4800-975a-ea4c5de4b87b" class="plotly-graph-div" style="height:400px; width:550px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("5fc172a4-8993-4800-975a-ea4c5de4b87b")) {                    Plotly.newPlot(                        "5fc172a4-8993-4800-975a-ea4c5de4b87b",                        [{"customdata":["GPT OSS 120B (High)","Minimax M2.1","GPT 5.2 (X-High)"],"hovertemplate":"%{customdata}\u003cbr\u003ePlain CoT: %{y:.2f}%\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#808080"},"name":"Plain CoT","x":[-0.15,0.85,1.85],"y":[6.11,3.06,59.809999999999995],"type":"bar"},{"customdata":["GPT OSS 120B (High)","Minimax M2.1","GPT 5.2 (X-High)"],"hovertemplate":"%{customdata}\u003cbr\u003eAgentic Coding: %{y:.2f}%\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#D2691E"},"name":"Agentic Coding","x":[0.15,1.15,2.15],"y":[26.39,10.56,73.36],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"tickmode":"array","tickvals":[0,1,2],"ticktext":["GPT OSS 120B (High)","Minimax M2.1","GPT 5.2 (X-High)"],"title":{"text":"Model"},"showgrid":false,"gridcolor":"rgba(0,0,0,0.1)"},"yaxis":{"title":{"text":"Score [%]"},"type":"linear","showgrid":true,"gridcolor":"rgba(0,0,0,0.1)","range":[-2,82]},"margin":{"l":50,"r":50,"t":40,"b":60},"showlegend":true,"height":400,"width":550,"plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)"},                        {"staticPlot": true, "displayModeBar": false, "responsive": false}                    ).then(function(){
+                            
+var gd = document.getElementById('5fc172a4-8993-4800-975a-ea4c5de4b87b');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-baseline-interleaved-bars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Agentic coding vs plain CoT performance on the ARC AGI 2 public evaluation set.
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>ARC AGI is a benchmark that aims to measure human-like fluid intelligence <span class="citation" data-cites="ref1"><a href="#ref-ref1" role="doc-biblioref">[1]</a></span>. It requires models to meta-learn a novel 2D grid transformation at test time, and then apply it to test grids.</p>
+<div id="cell-fig-puzzle-example" class="cell" data-execution_count="3">
+<div id="fig-puzzle-example" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-puzzle-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="d5b49ff1-bcf4-4271-b018-30227ba6d6ff" class="plotly-graph-div" style="height:285px; width:555px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("d5b49ff1-bcf4-4271-b018-30227ba6d6ff")) {                    Plotly.newPlot(                        "d5b49ff1-bcf4-4271-b018-30227ba6d6ff",                        [{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,9,9,9,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,9,9,9,9,9,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,9,9,9,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,9,9,9,7,7,7,0,0,0,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,9,9,9,9,9,7,0,0,0,0,0,7,1,1,1,1,1,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,9,9,9,7,7,7,0,0,0,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,2,2,2,2,2,7,7,7,7,7,7,7,3,3,3,3,3,7,7,7,7,7,7,7,7,7,7]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x","yaxis":"y"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,1,1,1,1,1,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,5,5,5,7,7,7,7,7,7,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,5,5,5,5,5,7,7,7,7,7,7,7,1,1,1,1,1,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,5,5,5,7,7,7,7,7,7,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,5,5,5,7,7,7,0,0,0,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,5,5,5,5,5,7,0,0,0,0,0,7,1,1,1,1,1,7,4,4,4,4,4,7,7,7,7],[7,7,7,7,5,5,5,7,7,7,0,0,0,7,7,7,1,1,1,7,7,7,4,4,4,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x2","yaxis":"y2"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,8,8,8,8,8,1,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,6,6,6,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,8,8,8,8,8,1,4,4,4,4,4,1,6,6,6,6,6,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,6,6,6,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x3","yaxis":"y3"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,8,8,8,8,8,1,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,5,5,5,1,1,1,1,1],[1,1,1,0,0,0,0,0,1,8,8,8,8,8,1,4,4,4,4,4,1,5,5,5,5,5,1,1,1,1],[1,1,1,1,0,0,0,1,1,1,8,8,8,1,1,1,4,4,4,1,1,1,5,5,5,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x4","yaxis":"y4"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,3,3,3,3,3,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,3,3,3,3,3,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,7,7,7,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,0,0,0,6,6,6,6,6],[6,6,6,7,7,7,7,7,6,2,2,2,2,2,6,3,3,3,3,3,6,0,0,0,0,0,6,6,6,6],[6,6,6,6,7,7,7,6,6,6,2,2,2,6,6,6,3,3,3,6,6,6,0,0,0,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,3,3,3,3,3,6,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x5","yaxis":"y5"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,2,2,2,2,2,6,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,7,7,7,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,0,0,0,6,6,6,6,6],[6,6,6,7,7,7,7,7,6,2,2,2,2,2,6,5,5,5,5,5,6,0,0,0,0,0,6,6,6,6],[6,6,6,6,7,7,7,6,6,6,2,2,2,6,6,6,5,5,5,6,6,6,0,0,0,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x6","yaxis":"y6"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,4,1,1,1,4,4,4,9,9,9,4,4,4,6,6,6,4,4,4,8,8,8,4,4,4,4,4],[4,4,4,1,1,1,1,1,4,9,9,9,9,9,4,6,6,6,6,6,4,8,8,8,8,8,4,4,4,4],[4,4,4,4,1,1,1,4,4,4,9,9,9,4,4,4,6,6,6,4,4,4,8,8,8,4,4,4,4,4],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[4,4,4,2,2,2,2,2,4,2,2,2,2,2,4,4,4,4,4,4,4,3,3,3,3,3,4,4,4,4]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x7","yaxis":"y7"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,0.22],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis":{"anchor":"x","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis2":{"anchor":"y2","domain":[0.26,0.48],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis2":{"anchor":"x2","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x2","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis3":{"anchor":"y3","domain":[0.52,0.74],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis3":{"anchor":"x3","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x3","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis4":{"anchor":"y4","domain":[0.78,1.0],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis4":{"anchor":"x4","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x4","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis5":{"anchor":"y5","domain":[0.0,0.22],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis5":{"anchor":"x5","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x5","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis6":{"anchor":"y6","domain":[0.26,0.48],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis6":{"anchor":"x6","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x6","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis7":{"anchor":"y7","domain":[0.52,0.74],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis7":{"anchor":"x7","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x7","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis8":{"anchor":"y8","domain":[0.78,1.0],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis8":{"anchor":"x8","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x8","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"margin":{"l":5,"r":5,"t":20,"b":5},"height":285,"width":555,"autosize":false,"showlegend":false,"plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)","shapes":[{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.22749999999999998,0.725 L 0.2525,0.75 L 0.22749999999999998,0.775 Z","type":"path","xref":"paper","yref":"paper"},{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.7475,0.725 L 0.7725,0.75 L 0.7475,0.775 Z","type":"path","xref":"paper","yref":"paper"},{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.22749999999999998,0.225 L 0.2525,0.25 L 0.22749999999999998,0.275 Z","type":"path","xref":"paper","yref":"paper"},{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.7475,0.225 L 0.7725,0.25 L 0.7475,0.275 Z","type":"path","xref":"paper","yref":"paper"}],"annotations":[{"font":{"color":"#666","size":96},"showarrow":false,"text":"?","x":0.89,"xanchor":"center","xref":"paper","y":0.25,"yanchor":"middle","yref":"paper"}]},                        {"staticPlot": true, "displayModeBar": false, "responsive": false}                    ).then(function(){
+                            
+var gd = document.getElementById('d5b49ff1-bcf4-4271-b018-30227ba6d6ff');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-puzzle-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: An ARC AGI 2 puzzle. The task is to infer the transformation being applied in the training examples (first three pairs), and then use that to predict the correct output for the test example.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The biggest accuracy gains in the benchmark have been primarily driven by frontier reasoning model releases, with OpenAI’s o3 (preview) being the first model to achieve human-level performance in ARC AGI 1 <span class="citation" data-cites="ref2"><a href="#ref-ref2" role="doc-biblioref">[2]</a></span>. The ARC Prize Foundation treated this as an <em>existence proof of fluid intelligence</em> in frontier models, which ARC AGI 1 was designed to pinpoint <span class="citation" data-cites="ref3"><a href="#ref-ref3" role="doc-biblioref">[3]</a></span>.</p>
+<p>If ARC AGI 1 was a binary measure of the existence of fluid intelligence, ARC AGI 2’s purpose was to measure the <em>level</em> of fluid intelligence. It was explicitly designed to challenge o3 (preview) like systems by demanding more reasoning depth, while still remaining easy for humans <span class="citation" data-cites="ref3 ref4"><a href="#ref-ref3" role="doc-biblioref">[3]</a>, <a href="#ref-ref4" role="doc-biblioref">[4]</a></span>.</p>
+<p>Within a few months of the new benchmark’s existence, new frontier model releases have driven the score from near-noise levels all the way up to 54.2% <span class="citation" data-cites="ref5"><a href="#ref-ref5" role="doc-biblioref">[5]</a></span>.</p>
+<p>In this post, we argue that this is not the full story. We believe that the benchmark leaderboard does not show the ceiling of fluid intelligence available from today’s models. Additional fluid intelligence can be unlocked by providing these models access to a REPL.</p>
+<p>As early as the first quarter of 2025, model makers were training reasoning models to interleave thought with action, especially code execution. This capability was already present in OpenAI reasoning models such as o3 and o4-mini, and started appearing in open-weight models from mid-2025 <span class="citation" data-cites="ref6 ref7"><a href="#ref-ref6" role="doc-biblioref">[6]</a>, <a href="#ref-ref7" role="doc-biblioref">[7]</a></span>. Models trained in this way seem to have additional fluid intelligence that is largely invisible in the plain CoT regime, but becomes available when models have access to a REPL.</p>
+<p>Our solver exploits this new regime in its simplest possible form. We frame ARC AGI puzzles as a program synthesis problem: find a Python function <code>solution(grid: list[list[int]]) -&gt; list[list[int]]</code> that maps all training examples correctly. We use a reasoning model capable of interleaved thinking and provide access to an IPython based REPL.</p>
+<p>Despite its simplicity, this setup produces large gains compared to plain CoT across multiple models, both open-weight and commercial. Our code and experiment data are publicly available <span class="citation" data-cites="ref34 ref35"><a href="#ref-ref34" role="doc-biblioref">[8]</a>, <a href="#ref-ref35" role="doc-biblioref">[9]</a></span>.</p>
+</section>
+<section id="how-our-solver-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-our-solver-works">How our solver works</h2>
+<p>Our solver uses the simplest implementation of agentic coding: a tool call loop, similar to the one popularized in a recent article about Claude Code <span class="citation" data-cites="ref8"><a href="#ref-ref8" role="doc-biblioref">[10]</a></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Agentic tool call loop (pseudocode)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Agentic tool call loop (pseudocode)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre class="text"><code>Initialize conversation with system prompt and solver prompt
+Initialize tool definition
+
+Loop:
+    Call model with conversation and tool definition
+
+    If the response contains tool call blocks:
+        Append any thinking blocks in the response to the conversation
+        (required only for stateless APIs)
+
+        For each tool call block containing tool name and tool args:
+            Execute the tool with tool args
+            Append the tool result (including errors) to the conversation
+
+    Otherwise:
+        Return the model’s final text output</code></pre>
+</div>
+</div>
+<p>For solving ARC AGI puzzles, we set up the tool call loop as follows.</p>
+<ol type="1">
+<li>We task the model to produce a Python function <code>solution(grid: list[list[int]]) -&gt; list[list[int]]</code> that correctly maps all training inputs to their corresponding outputs. In other words, we frame each puzzle as a <strong>program synthesis</strong> problem instead of directly predicting output grids, following a well-established line of prior work on ARC AGI <span class="citation" data-cites="ref9"><a href="#ref-ref9" role="doc-biblioref">[11]</a></span>. The appendix contains the <a href="#system-prompt">full prompt</a>.</li>
+<li>We provide the model with a coding tool, specifically a <strong>stateful IPython based REPL</strong>. The statefulness of the environment helps with exploration, robustness, and token efficiency, allowing the model to explore using small code snippets, inspect intermediate results, and reuse previously defined helper functions and variables. The environment preloads a variable <code>puzzle</code> containing the training examples and the test inputs. The environment comes with common third-party libraries that could be useful for solving ARC AGI puzzles (e.g.&nbsp;NumPy, SciPy, NetworkX, scikit-image, PIL, Z3). The appendix contains the <a href="#full-list-of-libraries-installed-in-the-stateful-ipython-based-code-interpreter">full list of installed packages</a>.</li>
+</ol>
+<p>Inside the tool call loop, the model executes code dozens of times and once it’s satisfied, outputs a <code>solution</code> function.</p>
+<p>This <code>solution</code> function plays a dual role: It is simultaneously a generator of the output grid (which is what is evaluated) and an <em>explanation</em> of the transformation that maps the training inputs to their output.</p>
+<div id="cell-fig-puzzle-with-code" class="cell" data-execution_count="4">
+<div id="fig-puzzle-with-code" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-puzzle-with-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+
+    <div class="puzzle-with-code">
+        <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="3a869c1c-dc0c-4ca4-84bd-deacf0307329" class="plotly-graph-div" style="height:307px; width:600px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("3a869c1c-dc0c-4ca4-84bd-deacf0307329")) {                    Plotly.newPlot(                        "3a869c1c-dc0c-4ca4-84bd-deacf0307329",                        [{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[8,8,8,8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8,8,8,8],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[6,6,6,6,6,6,6,6,6,6,6,6,6,6],[8,8,8,8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8,8,8,8],[1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1],[2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x","yaxis":"y"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,8,8,8,8,8,8,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,8,8,8,8,8,8,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,1,1,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,1,1,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,2,2,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,2,2,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,1,1,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,1,1,1,1,1,1,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,8,8,8,8,8,8,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,8,8,8,8,8,8,8,8,8,8,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,8,8],[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x2","yaxis":"y2"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[2,2,2,2,2,2,2,2,2,2,2,2],[3,3,3,3,3,3,3,3,3,3,3,3],[2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2],[3,3,3,3,3,3,3,3,3,3,3,3],[2,2,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,1,1,1,1],[2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2],[8,8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8,8]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x3","yaxis":"y3"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],[2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2],[2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2],[2,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,2],[2,3,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,3,2],[2,3,2,2,3,2,1,1,1,1,1,1,1,1,1,1,1,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,8,8,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,8,8,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,2,2,2,2,2,2,2,2,2,2,1,2,3,2,2,3,2],[2,3,2,2,3,2,1,1,1,1,1,1,1,1,1,1,1,1,2,3,2,2,3,2],[2,3,2,2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2,2,3,2],[2,3,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,2],[2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2],[2,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,2],[2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x4","yaxis":"y4"},{"colorscale":[[0.0,"#000"],[0.1,"#000"],[0.1,"#0074D9"],[0.2,"#0074D9"],[0.2,"#FF4136"],[0.3,"#FF4136"],[0.3,"#2ECC40"],[0.4,"#2ECC40"],[0.4,"#FFDC00"],[0.5,"#FFDC00"],[0.5,"#AAAAAA"],[0.6,"#AAAAAA"],[0.6,"#F012BE"],[0.7,"#F012BE"],[0.7,"#FF851B"],[0.8,"#FF851B"],[0.8,"#7FDBFF"],[0.9,"#7FDBFF"],[0.9,"#870C25"],[1.0,"#870C25"]],"hoverinfo":"skip","showscale":false,"xgap":0.33,"ygap":0.33,"z":[[3,3,3,3,3,3,3,3,3,3,3],[3,3,3,3,3,3,3,3,3,3,3],[8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8],[2,2,2,2,2,2,2,2,2,2,2],[8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8],[3,3,3,3,3,3,3,3,3,3,3],[7,7,7,7,7,7,7,7,7,7,7],[7,7,7,7,7,7,7,7,7,7,7],[5,5,5,5,5,5,5,5,5,5,5],[8,8,8,8,8,8,8,8,8,8,8],[8,8,8,8,8,8,8,8,8,8,8]],"zmax":9.5,"zmin":-0.5,"type":"heatmap","xaxis":"x6","yaxis":"y6"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,0.22],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis":{"anchor":"x","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis2":{"anchor":"y2","domain":[0.26,0.48],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis2":{"anchor":"x2","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x2","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis3":{"anchor":"y3","domain":[0.52,0.74],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis3":{"anchor":"x3","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x3","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis4":{"anchor":"y4","domain":[0.78,1.0],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis4":{"anchor":"x4","domain":[0.54,1.0],"autorange":"reversed","scaleanchor":"x4","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis5":{"anchor":"y5","domain":[0.0,0.22],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis5":{"anchor":"x5","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x5","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis6":{"anchor":"y6","domain":[0.26,0.48],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis6":{"anchor":"x6","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x6","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis7":{"anchor":"y7","domain":[0.52,0.74],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis7":{"anchor":"x7","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x7","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"xaxis8":{"anchor":"y8","domain":[0.78,1.0],"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"yaxis8":{"anchor":"x8","domain":[0.0,0.46],"autorange":"reversed","scaleanchor":"x8","scaleratio":1,"showticklabels":false,"showgrid":false,"zeroline":false,"showline":false},"margin":{"l":5,"r":5,"t":20,"b":5},"height":307,"width":600,"autosize":false,"showlegend":false,"plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)","shapes":[{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.22749999999999998,0.725 L 0.2525,0.75 L 0.22749999999999998,0.775 Z","type":"path","xref":"paper","yref":"paper"},{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.7475,0.725 L 0.7725,0.75 L 0.7475,0.775 Z","type":"path","xref":"paper","yref":"paper"},{"fillcolor":"#666","line":{"color":"#666","width":0},"path":"M 0.4875,0.225 L 0.5125,0.25 L 0.4875,0.275 Z","type":"path","xref":"paper","yref":"paper"}],"annotations":[{"font":{"color":"#666","size":96},"showarrow":false,"text":"?","x":0.63,"xanchor":"center","xref":"paper","y":0.25,"yanchor":"middle","yref":"paper"}]},                        {"staticPlot": true, "displayModeBar": false, "responsive": false}                    )                };            </script>        </div>
+        <div style="text-align: left; margin-top: 1em;">
+            <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">def</span><span style="color: #BBB"> </span><span style="color: #00F">solution</span>(grid):
+<span style="color: #BBB">    </span><span style="color: #BA2121; font-style: italic">"""</span>
+<span style="color: #BA2121; font-style: italic">    Transform the input grid into a nested square of colored frames.</span>
+
+<span style="color: #BA2121; font-style: italic">    The input consists of horizontal strips where each whole row has a single color.</span>
+<span style="color: #BA2121; font-style: italic">    For each consecutive block of rows with the same color we create a rectangular</span>
+<span style="color: #BA2121; font-style: italic">    frame whose thickness equals the height of that block.  Starting from the</span>
+<span style="color: #BA2121; font-style: italic">    innermost block (the last one in the input) we build the output square</span>
+<span style="color: #BA2121; font-style: italic">    outward by surrounding the current picture with a new frame of the next</span>
+<span style="color: #BA2121; font-style: italic">    outer colour.</span>
+
+<span style="color: #BA2121; font-style: italic">    The resulting picture is always a square.  Its side length is:</span>
+<span style="color: #BA2121; font-style: italic">        innermost_height + 2 * sum(outer_heights)</span>
+
+<span style="color: #BA2121; font-style: italic">    Parameters</span>
+<span style="color: #BA2121; font-style: italic">    ----------</span>
+<span style="color: #BA2121; font-style: italic">    grid : list[list[int]]</span>
+<span style="color: #BA2121; font-style: italic">        Input grid (uniform‑row strips).</span>
+
+<span style="color: #BA2121; font-style: italic">    Returns</span>
+<span style="color: #BA2121; font-style: italic">    -------</span>
+<span style="color: #BA2121; font-style: italic">    list[list[int]]</span>
+<span style="color: #BA2121; font-style: italic">        Output grid according to the described rule.</span>
+<span style="color: #BA2121; font-style: italic">    """</span>
+    <span style="color: #3D7B7B; font-style: italic"># ---------------------------------------------------------------</span>
+    <span style="color: #3D7B7B; font-style: italic"># 1. Determine the colour blocks (colour, height) from top to bottom.</span>
+    colours <span style="color: #666">=</span> []
+    heights <span style="color: #666">=</span> []
+    prev <span style="color: #666">=</span> <span style="color: #008000; font-weight: bold">None</span>
+    cnt <span style="color: #666">=</span> <span style="color: #666">0</span>
+    <span style="color: #008000; font-weight: bold">for</span> row <span style="color: #A2F; font-weight: bold">in</span> grid:
+        <span style="color: #3D7B7B; font-style: italic"># each row is assumed uniform; take its first cell as the colour</span>
+        c <span style="color: #666">=</span> row[<span style="color: #666">0</span>]
+        <span style="color: #008000; font-weight: bold">if</span> prev <span style="color: #A2F; font-weight: bold">is</span> <span style="color: #008000; font-weight: bold">None</span>:
+            prev <span style="color: #666">=</span> c
+            cnt <span style="color: #666">=</span> <span style="color: #666">1</span>
+        <span style="color: #008000; font-weight: bold">elif</span> c <span style="color: #666">==</span> prev:
+            cnt <span style="color: #666">+=</span> <span style="color: #666">1</span>
+        <span style="color: #008000; font-weight: bold">else</span>:
+            colours<span style="color: #666">.</span>append(prev)
+            heights<span style="color: #666">.</span>append(cnt)
+            prev <span style="color: #666">=</span> c
+            cnt <span style="color: #666">=</span> <span style="color: #666">1</span>
+    <span style="color: #3D7B7B; font-style: italic"># add the final block</span>
+    <span style="color: #008000; font-weight: bold">if</span> prev <span style="color: #A2F; font-weight: bold">is</span> <span style="color: #A2F; font-weight: bold">not</span> <span style="color: #008000; font-weight: bold">None</span>:
+        colours<span style="color: #666">.</span>append(prev)
+        heights<span style="color: #666">.</span>append(cnt)
+
+    <span style="color: #3D7B7B; font-style: italic"># ---------------------------------------------------------------</span>
+    <span style="color: #3D7B7B; font-style: italic"># 2. Build the nested frames from the innermost block outwards.</span>
+    <span style="color: #3D7B7B; font-style: italic">#    The innermost block becomes a solid square.</span>
+    cur_side <span style="color: #666">=</span> heights[<span style="color: #666">-1</span>]
+    cur_grid <span style="color: #666">=</span> [[colours[<span style="color: #666">-1</span>] <span style="color: #008000; font-weight: bold">for</span> _ <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(cur_side)] <span style="color: #008000; font-weight: bold">for</span> __ <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(cur_side)]
+
+    <span style="color: #3D7B7B; font-style: italic">#    For every outer block we create a new square, fill it with the block's</span>
+    <span style="color: #3D7B7B; font-style: italic">#    colour, and paste the previous picture into its centre.</span>
+    <span style="color: #008000; font-weight: bold">for</span> colour, thickness <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">zip</span>(<span style="color: #008000">reversed</span>(colours[:<span style="color: #666">-1</span>]), <span style="color: #008000">reversed</span>(heights[:<span style="color: #666">-1</span>])):
+        new_side <span style="color: #666">=</span> cur_side <span style="color: #666">+</span> <span style="color: #666">2</span> <span style="color: #666">*</span> thickness
+        <span style="color: #3D7B7B; font-style: italic"># new square filled with the outer colour</span>
+        new_grid <span style="color: #666">=</span> [[colour <span style="color: #008000; font-weight: bold">for</span> _ <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(new_side)] <span style="color: #008000; font-weight: bold">for</span> __ <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(new_side)]
+        <span style="color: #3D7B7B; font-style: italic"># copy the current picture into the centre</span>
+        <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #A2F; font-weight: bold">in</span> <span style="color: #008000">range</span>(cur_side):
+            new_grid[thickness <span style="color: #666">+</span> i][thickness:thickness <span style="color: #666">+</span> cur_side] <span style="color: #666">=</span> cur_grid[i][:]
+        <span style="color: #3D7B7B; font-style: italic"># prepare for next iteration</span>
+        cur_grid <span style="color: #666">=</span> new_grid
+        cur_side <span style="color: #666">=</span> new_side
+
+    <span style="color: #3D7B7B; font-style: italic"># ---------------------------------------------------------------</span>
+    <span style="color: #008000; font-weight: bold">return</span> cur_grid
+</pre></div>
+
+        </div>
+    </div>
+    
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-puzzle-with-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Puzzle 45a5af55 with solution code. The solution code provides a description of the inferred transformation.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Approaches that directly emit the output grids, for instance the plain CoT approach, lack this explanatory artifact. While a model can be prompted to produce an explanation alongside the output, there is no guarantee that such an explanation will faithfully reflect the model’s CoT <span class="citation" data-cites="ref10"><a href="#ref-ref10" role="doc-biblioref">[12]</a></span>. The faithfulness issue doesn’t arise in the program synthesis framing, and is a comparative advantage of this approach.</p>
+</section>
+<section id="interleaved-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="interleaved-thinking">Interleaved thinking</h2>
+<p>Tool call loops, such as the one described in the previous section, weren’t always as powerful as they are today. Something changed in 2025: model makers started training models to do <strong>interleaved thinking</strong> <span class="citation" data-cites="ref11"><a href="#ref-ref11" role="doc-biblioref">[13]</a></span>.</p>
+<p>Interleaved thinking can be viewed as a natural extension of test-time compute scaling to multi-step tool use. In this interaction pattern, a model’s reasoning is not confined to a single block before all tool calls, but can occur <em>between tool calls</em> as the model iteratively updates its understanding based on intermediate feedback <span class="citation" data-cites="ref12"><a href="#ref-ref12" role="doc-biblioref">[14]</a></span>.</p>
+<div id="fig-interleaved-thinking-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interleaved-thinking-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/interleaved_thinking_schematic.svg" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interleaved-thinking-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: <strong>Basic thinking</strong> (left) vs <strong>interleaved thinking</strong> (right). All thinking happens upfront in basic thinking, while the model thinks <em>between tool calls</em> in interleaved thinking.
+</figcaption>
+</figure>
+</div>
+<p>Interleaved thinking enables a model to propose a hypothesis, test it, observe what went wrong, and revise the hypothesis before deciding what to do next. In other words, it allows a model to <strong>allocate compute flexibly</strong> to refinement decisions that must be taken in reaction to ground truth results. Model makers explicitly train for this capability during the agentic RL phase of post-training. For example, the RL environment might be a REPL where the model can run code and inspect results, and the objective might be to write a feature that passes a test suite <span class="citation" data-cites="ref7"><a href="#ref-ref7" role="doc-biblioref">[7]</a></span>.</p>
+<p>This capability first appeared in frontier reasoning models in early 2025. Providers that claim to support it include:</p>
+<ul>
+<li>OpenAI (o3 and o4-mini onwards, including GPT OSS) <span class="citation" data-cites="ref6 ref7"><a href="#ref-ref6" role="doc-biblioref">[6]</a>, <a href="#ref-ref7" role="doc-biblioref">[7]</a></span></li>
+<li>Anthropic (Claude 4 onwards) <span class="citation" data-cites="ref13"><a href="#ref-ref13" role="doc-biblioref">[15]</a></span></li>
+<li>Google (Gemini 2.5 onwards) <span class="citation" data-cites="ref14"><a href="#ref-ref14" role="doc-biblioref">[16]</a></span></li>
+<li>Z.AI (GLM 4.5 onwards) <span class="citation" data-cites="ref15"><a href="#ref-ref15" role="doc-biblioref">[17]</a></span></li>
+<li>Minimax (M2 onwards) <span class="citation" data-cites="ref16"><a href="#ref-ref16" role="doc-biblioref">[18]</a></span></li>
+<li>Moonshot AI (Kimi K2 Thinking onwards) <span class="citation" data-cites="ref17"><a href="#ref-ref17" role="doc-biblioref">[19]</a></span></li>
+</ul>
+<p>However, the presence of this interface does not automatically imply that the powerful refinement behavior described above can be elicited reliably. In practice, we found that it depends on many factors, including correct inference engine implementation / API support, and correct client-side implementation. We return to these issues <a href="#interleaved-thinking-is-currently-fragile">later</a>.</p>
+<p>When it does work, however, the impact is known to be substantial <span class="citation" data-cites="ref16"><a href="#ref-ref16" role="doc-biblioref">[18]</a></span>.</p>
+<div id="fig-minimax-m2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-minimax-m2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://filecdn.minimax.chat/public/75d1cd81-4b20-4755-86d3-50000193bf14.PNG" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-minimax-m2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Interleaved thinking increases performance in Minimax M2 <span class="citation" data-cites="ref16"><a href="#ref-ref16" role="doc-biblioref">[18]</a></span>.
+</figcaption>
+</figure>
+</div>
+<p>Interleaved thinking is at the heart of the current agentic coding zeitgeist. We find that it also matters for ARC AGI 2. The ARC Prize Foundation has already identified model refinement harnesses as an important axis of improvement in 2025 <span class="citation" data-cites="ref5"><a href="#ref-ref5" role="doc-biblioref">[5]</a></span>. In practice, this primarily refers to human-engineered outer refinement loops on top of reasoning model outputs. Interleaved thinking is enabling models to learn such refinement skills directly from data. As a result, refinement behavior can improve with more data, richer environments, and more compute <span class="citation" data-cites="ref18"><a href="#ref-ref18" role="doc-biblioref">[20]</a></span>.</p>
+<div id="fig-interleaved-thinking-examples" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interleaved-thinking-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/interleaved_thinking_examples.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interleaved-thinking-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Schematic interleaved thinking when solving an ARC AGI puzzle. Executing code in a REPL and viewing the result is a way of grounding the LLM to a ground truth (in this case a formal structure and puzzle data expressed in Python code). Interleaved thinking allows the model to allocate compute flexibly to refinement decisions that must be taken in response to the ground truth.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>In this section, we present the results of running our solver on the <strong>full ARC AGI 2 public evaluation set consisting of 120 puzzles</strong>.</p>
+<p>The official ARC AGI evaluation uses a <strong>pass@2</strong> metric, meaning that two answer candidates may be submitted for each test input <span class="citation" data-cites="ref20"><a href="#ref-ref20" role="doc-biblioref">[21]</a></span>. We run our solver and the plain CoT baseline twice and submit two solutions per test.</p>
+<p>We observe a large performance gap compared to plain CoT.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="How to interpret these results">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to interpret these results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Our results are not directly comparable to the verified leaderboard scores, which are based on a different semi-private evaluation set to control for memorization <span class="citation" data-cites="ref19"><a href="#ref-ref19" role="doc-biblioref">[22]</a></span>.</p>
+<p>However, we believe that our results are still meaningful since we compare against the plain CoT baseline using the same model.</p>
+</div>
+</div>
+<section id="gpt-oss-120b-reasoning-effort-high" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-oss-120b-reasoning-effort-high">GPT OSS 120B (reasoning effort “high”)</h3>
+<table class="caption-top table">
+<caption>GPT OSS 120B (reasoning effort “high”) results on the full 120-puzzle set.</caption>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Plain CoT</th>
+<th>Agentic Coding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Score</td>
+<td>6.11 %</td>
+<td>26.38 %</td>
+</tr>
+<tr class="even">
+<td>Cost per puzzle</td>
+<td>$0.23</td>
+<td>$0.47</td>
+</tr>
+</tbody>
+</table>
+<p>This represents a &gt; 4x absolute improvement from near-noise performance into frontier model territory.</p>
+</section>
+<section id="minimax-m2.1" class="level3">
+<h3 class="anchored" data-anchor-id="minimax-m2.1">Minimax M2.1</h3>
+<table class="caption-top table">
+<caption>Minimax M2.1 results on the full 120-puzzle set.</caption>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Plain CoT</th>
+<th>Agentic Coding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Score</td>
+<td>3.06%</td>
+<td>10.56 %</td>
+</tr>
+<tr class="even">
+<td>Cost per puzzle</td>
+<td>$0.22</td>
+<td>$1.27</td>
+</tr>
+</tbody>
+</table>
+<p>Although Minimax M2.1’s absolute performance remains modest, the relative gain mirrors the GPT OSS 120B result, suggesting the effect is not model-specific.</p>
+</section>
+<section id="gpt-5.2-reasoning-effort-xhigh-ref28" class="level3">
+<h3 class="anchored" data-anchor-id="gpt-5.2-reasoning-effort-xhigh-ref28">GPT 5.2 (reasoning effort “xhigh”) <span class="citation" data-cites="ref28"><a href="#ref-ref28" role="doc-biblioref">[23]</a></span></h3>
+<table class="caption-top table">
+<caption>GPT 5.2 scores on the 107-puzzle subset <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</caption>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Plain CoT</th>
+<th>Agentic Coding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Score</td>
+<td>59.81 %</td>
+<td>73.36 %</td>
+</tr>
+<tr class="even">
+<td>Cost per puzzle</td>
+<td>$2.05</td>
+<td>$5.22</td>
+</tr>
+</tbody>
+</table>
+<p>The GPT 5.2 results show that even at high baseline performance, agentic coding yields a double-digit absolute gain, indicating that the effect persists well into the frontier regime.</p>
+<p>The raw evaluation data, including reasoning traces for the open weight models, is available on Hugging Face <span class="citation" data-cites="ref35"><a href="#ref-ref35" role="doc-biblioref">[9]</a></span>.</p>
+<div id="cell-fig-baseline-interleaved-scatter" class="cell" data-execution_count="5">
+<div id="fig-baseline-interleaved-scatter" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-baseline-interleaved-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="03ecac35-82e8-4d95-89f3-ab23166c7485" class="plotly-graph-div" style="height:400px; width:550px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("03ecac35-82e8-4d95-89f3-ab23166c7485")) {                    Plotly.newPlot(                        "03ecac35-82e8-4d95-89f3-ab23166c7485",                        [{"hovertemplate":"%{hovertext}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["\u003cb\u003eGPT OSS 120B (High) Baseline CoT\u003c\u002fb\u003e\u003cbr\u003escore: 6.11\u003cbr\u003ecostPerTask: 0.23\u003cbr\u003emodelId: gpt-oss-120b-high\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: CoT\u003cbr\u003emodelGroup: gpt-oss-120b\u003cbr\u003eproviderId: Lambda (vllm)","\u003cb\u003eGPT OSS 120B (High) (Interleaved Thinking)\u003c\u002fb\u003e\u003cbr\u003escore: 26.39\u003cbr\u003ecostPerTask: 0.47\u003cbr\u003emodelId: gpt-oss-120b-high\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: Interleaved Thinking\u003cbr\u003emodelGroup: gpt-oss-120b\u003cbr\u003eproviderId: Lambda (vllm)"],"marker":{"color":["#808080","#D2691E"],"opacity":0.9,"size":12,"symbol":["diamond","star"]},"mode":"markers","name":"GPT OSS 120B (High)","showlegend":false,"x":[0.23,0.47],"y":[6.11,26.39],"type":"scatter","xaxis":"x","yaxis":"y"},{"hovertemplate":"%{hovertext}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["\u003cb\u003eMinimax M2.1 Baseline CoT\u003c\u002fb\u003e\u003cbr\u003escore: 3.06\u003cbr\u003ecostPerTask: 0.22\u003cbr\u003emodelId: MiniMax-M2.1\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: CoT\u003cbr\u003emodelGroup: MiniMax-M2\u003cbr\u003eproviderId: Minimax","\u003cb\u003eMinimax M2.1 (Interleaved Thinking)\u003c\u002fb\u003e\u003cbr\u003escore: 10.56\u003cbr\u003ecostPerTask: 1.27\u003cbr\u003emodelId: MiniMax-M2.1\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: Interleaved Thinking\u003cbr\u003emodelGroup: MiniMax-M2\u003cbr\u003eproviderId: Minimax"],"marker":{"color":["#808080","#D2691E"],"opacity":0.9,"size":12,"symbol":["diamond","star"]},"mode":"markers","name":"Minimax M2.1","showlegend":false,"x":[0.22,1.27],"y":[3.06,10.56],"type":"scatter","xaxis":"x","yaxis":"y"},{"hovertemplate":"%{hovertext}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["\u003cb\u003eGPT 5.2 XHigh Baseline CoT (107 puzzles)\u003c\u002fb\u003e\u003cbr\u003escore: 59.809999999999995\u003cbr\u003ecostPerTask: 2.05\u003cbr\u003emodelId: gpt-5-2-2025-12-11-thinking-xhigh\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: CoT\u003cbr\u003emodelGroup: gpt-5-2-2025-12-11-thinking\u003cbr\u003eproviderId: OpenAI","\u003cb\u003eGPT 5.2 XHigh (Interleaved Thinking) (107 puzzles)\u003c\u002fb\u003e\u003cbr\u003escore: 73.36\u003cbr\u003ecostPerTask: 5.22\u003cbr\u003emodelId: gpt-5-2-2025-12-11-thinking-xhigh\u003cbr\u003edatasetId: v2_Public_Eval_Kaggle\u003cbr\u003emodelType: Interleaved Thinking\u003cbr\u003emodelGroup: gpt-5-2-2025-12-11-thinking\u003cbr\u003eproviderId: OpenAI"],"marker":{"color":["#808080","#D2691E"],"opacity":0.9,"size":12,"symbol":["diamond","star"]},"mode":"markers","name":"GPT 5.2 (X-High)","showlegend":false,"x":[2.05,5.22],"y":[59.809999999999995,73.36],"type":"scatter","xaxis":"x","yaxis":"y"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Cost per task [$]"},"type":"linear","showgrid":true,"gridcolor":"rgba(0,0,0,0.1)","range":[-0.5,5.5]},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Score [%]"},"type":"linear","showgrid":true,"gridcolor":"rgba(0,0,0,0.1)","range":[0,85]},"annotations":[{"arrowcolor":"rgba(128,128,128,0.5)","arrowhead":3,"arrowsize":1,"arrowwidth":2.0,"ax":0.23,"axref":"x","ay":6.11,"ayref":"y","showarrow":true,"text":"","x":0.47,"xref":"x","y":26.39,"yref":"y"},{"bgcolor":"rgba(255,255,255,0.85)","bordercolor":"rgba(0,0,0,0.2)","borderpad":3,"borderwidth":1,"font":{"size":10},"showarrow":false,"text":"GPT OSS 120B (High)","x":0.5118926637725669,"xanchor":"center","xref":"x","y":18.276226117350337,"yanchor":"top","yref":"y"},{"arrowcolor":"rgba(128,128,128,0.5)","arrowhead":3,"arrowsize":1,"arrowwidth":2.0,"ax":0.22,"axref":"x","ay":3.06,"ayref":"y","showarrow":true,"text":"","x":1.27,"xref":"x","y":10.56,"yref":"y"},{"bgcolor":"rgba(255,255,255,0.85)","bordercolor":"rgba(0,0,0,0.2)","borderpad":3,"borderwidth":1,"font":{"size":10},"showarrow":false,"text":"Minimax M2.1","x":0.8653265222209311,"xanchor":"center","xref":"x","y":7.55046862057093,"yanchor":"top","yref":"y"},{"arrowcolor":"rgba(128,128,128,0.5)","arrowhead":3,"arrowsize":1,"arrowwidth":2.0,"ax":2.05,"axref":"x","ay":59.809999999999995,"ayref":"y","showarrow":true,"text":"","x":5.22,"xref":"x","y":73.36,"yref":"y"},{"bgcolor":"rgba(255,255,255,0.85)","bordercolor":"rgba(0,0,0,0.2)","borderpad":3,"borderwidth":1,"font":{"size":10},"showarrow":false,"text":"GPT 5.2 (X-High)","x":3.948943104313803,"xanchor":"center","xref":"x","y":67.90314039603291,"yanchor":"top","yref":"y"}],"margin":{"l":60,"r":30,"t":40,"b":60},"showlegend":false,"height":400,"width":550,"plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)"},                        {"staticPlot": true, "displayModeBar": false, "responsive": false}                    ).then(function(){
+                            
+var gd = document.getElementById('03ecac35-82e8-4d95-89f3-ab23166c7485');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-baseline-interleaved-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Plain CoT baseline vs agentic coding (cost vs score).
+</figcaption>
+</figure>
+</div>
+</div>
+<aside id="footnotes" class="footnotes footnotes-end-of-section" role="doc-footnote">
+<hr>
+<ol>
+<li id="fn1"><p>We did not measure the plain CoT score ourselves because the Responses API background mode enforces a hard server-side timeout of one hour, and the model exceeds this limit on many puzzles in plain CoT mode. The agentic coding setup is fortunately not affected by the one-hour timeout, as the model typically alternates between short reasoning steps and code execution rather than engaging in long uninterrupted chains of thought. To get the most reliable plain CoT possible, we use the official plain CoT result reported by the ARC Prize Foundation in their Hugging Face repository <span class="citation" data-cites="ref21"><a href="#ref-ref21" role="doc-biblioref">[24]</a></span>. According to that data, the model solves 64 out of 107 puzzles; the remaining 13 puzzles could not be scored due to timeouts or errors. We therefore report results on this 107-puzzle subset, which is consistent with prior reporting <span class="citation" data-cites="ref33"><a href="#ref-ref33" role="doc-biblioref">[25]</a></span>. To ensure an apples-to-apples comparison, we evaluate our agentic coding setup on the same subset. On this basis, agentic coding achieves a score of 73.36%. If all 120 puzzles were included, counting unsolved puzzles as failures, the plain CoT score would be 53.33%, while agentic coding would achieve 68.33%.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</aside>
+</section>
+</section>
+<section id="connection-to-prior-work" class="level2">
+<h2 class="anchored" data-anchor-id="connection-to-prior-work">Connection to prior work</h2>
+<p>The program synthesis framing of ARC AGI puzzles has a rich and varied history. Icecuber’s winning solution in the original 2024 Kaggle ARC competition was an example of classic <em>discrete program search</em>. It relied on a custom DSL and enumerative search to find programs consistent with the training examples <span class="citation" data-cites="ref22"><a href="#ref-ref22" role="doc-biblioref">[26]</a></span>.</p>
+<p>In 2024, large language models became good enough to act as proposal engines for this search. Ryan Greenblatt showed that LLMs can generate Python programs that solve ARC puzzles when combined with massive sampling and iterative refinement <span class="citation" data-cites="ref9"><a href="#ref-ref9" role="doc-biblioref">[11]</a></span>. Jeremy Berman pushed this direction even further <span class="citation" data-cites="ref23"><a href="#ref-ref23" role="doc-biblioref">[27]</a></span>.</p>
+<p>In late 2024, OpenAI’s reasoning model o3 (preview) achieved human-level performance on ARC AGI 1. One useful way to interpret o3’s step jump improvement is as an emergent form of test-time search. It was post-trained using large-scale RLVR, and this produces “search in natural language space”: iteratively proposing, testing, and revising explanations in a single chain-of-thought until one fits the demonstrations <span class="citation" data-cites="ref2"><a href="#ref-ref2" role="doc-biblioref">[2]</a></span>.</p>
+<p>ARC AGI 2 was explicitly designed to challenge o3 (preview) like systems by demanding more reasoning depth, while still remaining easy for humans. At the time of release, frontier reasoning models like o3 had near-noise-level performance on the new benchmark <span class="citation" data-cites="ref4"><a href="#ref-ref4" role="doc-biblioref">[4]</a></span>.</p>
+<section id="two-threads-of-progress-in-2025" class="level3">
+<h3 class="anchored" data-anchor-id="two-threads-of-progress-in-2025">Two threads of progress in 2025</h3>
+<p>According to ARC Prize Foundation’s own analysis, major improvements in ARC AGI 2 scores in 2025 came from two distinct but complementary directions <span class="citation" data-cites="ref24"><a href="#ref-ref24" role="doc-biblioref">[28]</a></span>.</p>
+<section id="stronger-reasoning-models" class="level4">
+<h4 class="anchored" data-anchor-id="stronger-reasoning-models">Stronger reasoning models</h4>
+<p>Successive releases of frontier reasoning models steadily improved ARC AGI 2 performance. Models such as Grok 4, GPT-5.1, Gemini 3 Pro, Deep Think and Flash Preview, Claude Opus 4.5, and GPT-5.2 progressively raised verified scores on the benchmark, while also reducing cost by several orders of magnitude. The 2025 performance champion was GPT 5.2 Pro (High), scoring 54.2% at a cost of $15.72 / puzzle, while the efficiency champion was Gemini 3 Flash Preview (High) scoring 33.6% at a meager cost of $0.231 / puzzle. A key property of these reasoning models is their ability to improve pass@1 performance <span class="citation" data-cites="ref36"><a href="#ref-ref36" role="doc-biblioref">[29]</a></span>. As a result, the need for massive sampling has largely disappeared.</p>
+</section>
+<section id="refinement-systems-on-top-of-reasoning-models" class="level4">
+<h4 class="anchored" data-anchor-id="refinement-systems-on-top-of-reasoning-models">Refinement systems on top of reasoning models</h4>
+<p>In parallel, a second line of work proved that large performance jumps can be obtained by refining reasoning model outputs through explicit outer loops. Sakana AI introduced AB-MCTS, combining sampling and refinement with multi-model collaboration <span class="citation" data-cites="ref25"><a href="#ref-ref25" role="doc-biblioref">[30]</a></span>. Berman adapted and extended his evolutionary methods to new reasoning models <span class="citation" data-cites="ref26"><a href="#ref-ref26" role="doc-biblioref">[31]</a></span>. Poetiq combined refinement with optional multi-model collaboration, reporting strong verified results on ARC AGI 2 <span class="citation" data-cites="ref27"><a href="#ref-ref27" role="doc-biblioref">[32]</a></span>.</p>
+</section>
+</section>
+<section id="width-depth-and-what-changed" class="level3">
+<h3 class="anchored" data-anchor-id="width-depth-and-what-changed">Width, depth, and what changed</h3>
+<p>A useful way to unify these threads is through a search analogy.</p>
+<ul>
+<li><strong>Massive sampling</strong> corresponds to search <em>width</em>: generate many candidates and hope one succeeds.</li>
+<li><strong>Refinement</strong> corresponds to search <em>depth</em>: iteratively improve a candidate based on feedback.</li>
+</ul>
+<p>In 2024, strong ARC systems typically relied on both large width and deep refinement loops. In 2025, stronger reasoning models dramatically reduced the need for width, but depth was still often supplied by human-designed systems layered on top of the model.</p>
+<p>Our observation is that interleaved thinking collapses much of this remaining depth into the model itself. This places our approach closest in spirit to refinement-on-reasoning-model systems such as Poetiq’s, but with a key difference: refinement happens <em>within a single model turn</em>, not across an engineered outer loop. Under interleaved thinking, a single model turn can involve dozens of code executions and intermediate checks, dramatically increasing the <em>density of refinement signal</em> available to the model.</p>
+<div id="cell-fig-gpt-oss-num-tool-calls" class="cell" data-execution_count="6">
+<div id="fig-gpt-oss-num-tool-calls" class="cell-output cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gpt-oss-num-tool-calls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="a688d453-99f8-4327-a194-dbf9a3d0a756" class="plotly-graph-div" style="height:400px; width:520px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("a688d453-99f8-4327-a194-dbf9a3d0a756")) {                    Plotly.newPlot(                        "a688d453-99f8-4327-a194-dbf9a3d0a756",                        [{"hoverinfo":"skip","marker":{"color":"#D2691E"},"nbinsx":40,"x":[310,72,225,268,303,22,122,255,83,303,76,113,14,237,211,156,226,122,283,182,65,202,310,154,69,309,72,167,130,85,269,311,37,227,45,49,169,116,328,63,157,227,187,328,43,81,358,74,71,159,80,88,256,49,126,56,183,135,95,129,91,162,75,154,289,48,149,50,126,127,79,57,18,71,70,48,255,56,42,41,100,372,175,158,60,289,77,33,83,107,203,69,116,85,119,160,42,142,333,113,19,217,66,201,283,40,302,396,23,4,46,96,90,123,190,92,72,372,105,140,57,219,108,18,75,88,24,197,99,87,54,60,76,90,244,206,316,130,94,68,79,49,120,102,190,377,46,62,98,88,31,85,62,116,38,236,76,152,59,29,208,55,79,435,79,58,81,183,19,70,56,39,21,13,97,176,95,112,250,83,222,203,7,57,93,146,367,28,91,72,89,86,213,89,43,59,463,71,134,105,323,24,170,332,62,4,69,62,80,191,373,310,358,47,36,260,64,155,128,303,96,14,15,59,18,40,27,181,276,208,67,42,201,77,50,36,241,144,197,56],"type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"margin":{"l":60,"r":30,"t":40,"b":60},"xaxis":{"title":{"text":"number of tool calls per turn"},"showgrid":true,"gridcolor":"rgba(0,0,0,0.1)"},"yaxis":{"title":{"text":"count"},"showgrid":true,"gridcolor":"rgba(0,0,0,0.1)"},"height":400,"width":520,"plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)"},                        {"staticPlot": true, "displayModeBar": false, "responsive": false}                    ).then(function(){
+                            
+var gd = document.getElementById('a688d453-99f8-4327-a194-dbf9a3d0a756');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gpt-oss-num-tool-calls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Histogram for the number of tool calls per turn in GPT-OSS-120B. This is a proxy for the number of potential refinement signals available to the model in a single turn.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The broader point is that refinement becomes a learned capability rather than a hand-authored procedure. Seen in this light, our work provides signs of a regime shift. Much of what appeared as bespoke refinement in 2025 can perhaps already be recovered by evaluating models in the agentic coding regime. Our solver is intentionally minimal for this reason: it aims to strip away as much human-designed depth as possible while still capturing the dominant effect.</p>
+</section>
+</section>
+<section id="interleaved-thinking-is-currently-fragile" class="level2">
+<h2 class="anchored" data-anchor-id="interleaved-thinking-is-currently-fragile">Interleaved thinking is currently fragile</h2>
+<p>We developed and validated our core system using the open weight model GPT OSS 120B. To our knowledge, this is the first report of an OSS model achieving competitive performance on ARC AGI 2. We hope this will act as a research enabler since open models make experimentation cheaper, more reproducible, and debuggable in ways that are difficult or impossible with closed APIs.</p>
+<p>This choice also shaped our understanding of interleaved thinking itself.</p>
+<p>In early experiments with GPT OSS, which we did around September 2025, we used the Chat Completions compatible OpenRouter API for inference. Most providers, including those classified as “exacto” by OpenRouter, threw errors or failed softly. By soft failure, we mean that the model responded, but without interleaved thinking. We got positive results from Fireworks during a brief window, but it regressed afterwards.</p>
+<p>We eventually moved to self-hosted inference using vLLM and SGLang. In both cases, we encountered bugs related to Harmony chat template parsing, once again leading to errors or soft failures. We finally obtained reliable interleaved thinking by patching the vLLM Responses API and adding client-side hardening to recover from model-specific issues, e.g., malformed tool calls.</p>
+<p>We are not the first to encounter these issues. OpenRouter has reported degraded tool calling across many providers and introduced a whitelist system (“exacto”) intended to filter for reliability <span class="citation" data-cites="ref29"><a href="#ref-ref29" role="doc-biblioref">[33]</a></span>. We didn’t benefit from the “exacto” system, but perhaps others will. Multiple issues related to GPT OSS tool calling are open on the vLLM and SGLang GitHub repositories, and just a month prior to our publication, a PR addressing many Harmony parsing issues in vLLM’s Chat Completions API was merged <span class="citation" data-cites="ref30"><a href="#ref-ref30" role="doc-biblioref">[34]</a></span>.</p>
+<p>We are also publishing our Responses API patch for vLLM alongside this post <span class="citation" data-cites="ref37"><a href="#ref-ref37" role="doc-biblioref">[35]</a></span>. Our hope is that these developments make it substantially easier for others to experience the full intelligence of GPT OSS, which we found to be a very capable model once the interaction regime is stabilized.</p>
+<p>Crucially, these issues were diagnosable precisely because the model and inference stack were open. With a closed model, it’s usually unclear whether failures originated in the model, the inference engine, the API, or the provider.</p>
+<p>Gemini provides a useful contrast. When used with our solver, Gemini 2.5 Pro and Gemini 2.5 Flash often returned opaque errors or soft failures, depending on whether we used the Chat Completions compatible client or the native client. We were unable to determine the exact cause, but based on many public GitHub issues, one of the plausible issues seemed to be that malformed tool calls (for example, invalid JSON) are not returned to the client, but instead terminate the interaction <span class="citation" data-cites="ref31"><a href="#ref-ref31" role="doc-biblioref">[36]</a></span>. GPT OSS also emits malformed tool calls, but when the error is passed back to the model, it often corrects itself.</p>
+<p>Taken together, these experiences suggest that interleaved thinking is currently a <em>fragile interaction regime</em> that only manifests when many components behave correctly at the same time.</p>
+<p>Each layer of the stack matters:</p>
+<ul>
+<li><strong>Model.</strong> Agentic RLVR training alone may not guarantee emergent refinement behavior in every use case.</li>
+<li><strong>Provider API.</strong> The API should preferably be stateful (e.g.&nbsp;a Responses-style API), or, in the case of stateless APIs (e.g.&nbsp;Chat Completions), allow clients to pass back prior reasoning blocks and handle those in a way that aligns with the model’s training. Both types of APIs must surface errors transparently so they can be handled by the client.</li>
+<li><strong>Inference engines.</strong> Frameworks such as vLLM and SGLang must faithfully implement model-specific chat templates, including edge cases, and should pass errors back as transparently as possible.</li>
+<li><strong>Middleware APIs.</strong> Middleware layers such as OpenRouter must have feature parity with the underlying provider APIs and translate client requests and responses faithfully, again preferring transparent error propagation.</li>
+<li><strong>Client-side state management.</strong> When using stateless APIs, the client must correctly replay previous thinking content back to the model.</li>
+</ul>
+<p>When any of these layers fails, the outcome is often ambiguous. Sometimes the failure is hard, in the form of server errors that terminate the interaction. More often, it is soft: the model still responds, but without interleaved thinking. It seems the model is dumber than it actually is.</p>
+<p>Our sense is that the community is aware of these problems and is making steady progress towards more reliable interleaved thinking. The wholesale move away from stateless APIs to stateful APIs last year is a part of this trend. Until things stabilize, we think that evals like OpenRouter’s “exacto” system or the K2-Vendor-Verifier could help a lot, as long as they explicitly evaluate this interaction regime <span class="citation" data-cites="ref32"><a href="#ref-ref32" role="doc-biblioref">[37]</a></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Practical takeaway">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Practical takeaway
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If a model capable interleaved thinking appears unexpectedly weak in agentic use cases, common failure modes include:</p>
+<ol type="1">
+<li>Loss of prior reasoning state in stateless APIs<br>
+</li>
+<li>Incorrect chat template implementation in inference engines</li>
+<li>Silent suppression of malformed tool calls</li>
+<li>Middlewares not translating API calls properly</li>
+<li>Tool errors not being surfaced to the model</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We show that agentic coding unlocks additional fluid intelligence in reasoning language models. Empirically, this manifests as large performance jumps in ARC AGI 2 across models. A medium-sized open-weight model achieves competitive performance on ARC AGI 2 under this setup, and the same system transfers to a frontier commercial model without modification.</p>
+<p>At this stage, it is unclear whether the gains happen because code execution is a stronger form of verification compared to plain CoT or because it encourages qualitatively different thinking patterns. It would be interesting to study this question in the future.</p>
+<p>The score we obtain using GPT 5.2 Xhigh is comparable to the unverified SOTA score recently reported by Poetiq using the same model in a domain-specific application layer harness <span class="citation" data-cites="ref33"><a href="#ref-ref33" role="doc-biblioref">[25]</a></span>. We haven’t submitted our solver to the official leaderboard yet because we have early indications that we can push our score even further by using general purpose methods to increase test time compute e.g.&nbsp;sampling and majority voting. We intend to make an official leaderboard submission once we reach that point. We would appreciate any OpenAI API credit donations that can help us make this a reality.</p>
+<p>We would also be very happy to test other models capable of interleaved thinking on ARC AGI 2 and check if the trend is universal. Please get in touch with us if you are interested.</p>
+<p>Thank you for taking the time to read our work.</p>
+</section>
+<section id="about-us" class="level2">
+<h2 class="anchored" data-anchor-id="about-us">About us</h2>
+<p>We are a small group of hobbyists interested in the hard questions in AI.</p>
+<section id="dibya-chakravorty" class="level3">
+<h3 class="anchored" data-anchor-id="dibya-chakravorty">Dibya Chakravorty</h3>
+<p>I majored in Physics and got interested in AGI after reading <a href="https://en.wikipedia.org/wiki/The_Emperor%27s_New_Mind">The Emperor’s New Mind by Roger Penrose</a>.</p>
+<p>Professionally, I work as a generalist Python developer and cloud architect. Alongside this, I organize the <a href="https://www.meetup.com/de-de/munchen-artificial-general-intelligence-meetup-group/">Artificial General Intelligence meetup group in Munich</a> to discuss AI research with like-minded people, and I pursue independent work in machine learning research, application, and education.</p>
+<p>I’m now looking to focus this effort on more ambitious AI projects and am very happy to talk to people working on them.</p>
+<p><a href="mailto:dibyachakravorty@gmail.com" class="btn btn-outline-primary me-2">Email</a> <a href="https://github.com/gutfeeling" class="btn btn-outline-primary me-2">GitHub</a> <a href="https://dibya.online" class="btn btn-outline-primary me-2">Website</a> <a href="https://x.com/dibyasays" class="btn btn-outline-primary me-2">X</a></p>
+</section>
+<section id="debsankha-manik" class="level3">
+<h3 class="anchored" data-anchor-id="debsankha-manik">Debsankha Manik</h3>
+</section>
+<section id="bernhard-altaner" class="level3">
+<h3 class="anchored" data-anchor-id="bernhard-altaner">Bernhard Altaner</h3>
+<p>After studying physics and mathematics in Konstanz and Cambridge, I completed a PhD in Physics at the University of Göttingen on information and entropy in physics.</p>
+<p>I then worked in academia in Luxembourg and Munich on chemical evolution and the origins of life, and now work in R&amp;D on smart energy management while pursuing side projects like this one.</p>
+<p>Philosophically, I am interested in consciousness, particularly how it might emerge as an evolutionary consequence when a subsystem of the universe forms a model of its environment.</p>
+<p><a href="mailto:bernhard@beralt.com" class="btn btn-outline-primary me-2">Email</a> <a href="https://scholar.google.com/citations?user=eJir3-oAAAAJ" class="btn btn-outline-primary me-2">Google Scholar</a> <a href="https://chaos.social/@beralt" class="btn btn-outline-primary me-2">Mastodon</a></p>
+</section>
+<section id="nicolas-berg" class="level3">
+<h3 class="anchored" data-anchor-id="nicolas-berg">Nicolas Berg</h3>
+<p>After studying Information Technology at the Karlsruhe Institute of Technology, I worked as an engineer in the automotive industry in Munich.</p>
+<p>My interest in AGI was sparked by Dibya’s contagious passion at the first event of his AGI Munich meetup, which I later joined and now co-host.</p>
+<p>I am currently in the early process of co-building a company to develop an AI coach aimed at bridging gaps between students, educators, mentors, and hybrid online/local maker communities, with a focus on learner agency, maker-based practice, and gaps in classical education.</p>
+<p><a href="mailto:nicoberg_arc@fastmail.com" class="btn btn-outline-primary me-2">Email</a> <a href="https://x.com/NicoBerg101" class="btn btn-outline-primary me-2">X</a></p>
+</section>
+<section id="our-story" class="level3">
+<h3 class="anchored" data-anchor-id="our-story">Our story</h3>
+<p>We started this project in the summer of 2025 with the initial goal of participating in the ARC Prize Kaggle competition. Early on, we were exploring agentic coding with frontier reasoning models and found that models like o3 and o4-mini could generate high-quality synthetic ARC-style puzzles. Our plan was to use these synthetic puzzles to train a smaller model via agentic reinforcement learning (RLVR with interleaved thinking).</p>
+<p>To bootstrap this process, we needed successful solution traces from an open-weight reasoning model for cold-start supervised fine-tuning. That requirement led us to investigate GPT-OSS-120B. While doing so, we noticed something unexpected: simply placing the model into an agentic coding regime produced large and consistent score improvements on ARC AGI tasks. We were seeing scores that we didn’t think was possible for a medium sized OSS model.</p>
+<p>This observation ultimately shifted the focus of our work as we wanted to find out how universally this observation applies while staying within our resource constraints. The results of that investigation are what you see in this post. We hope you enjoy it.</p>
+</section>
+</section>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>We gratefully acknowledge <a href="https://lambda.ai">Lambda</a> for their generous support in the form of platform credits. This work would not have been possible without their commitment to supporting open-source research on ARC AGI. We found the Lambda platform intuitive and easy to use, and we can confidently recommend it to anyone seeking cloud resources for training or inference workloads.</p>
+<p>We also thank <strong>Somayeh Vojdani</strong> and <strong>Tariq Baig-Meininghaus</strong> for their stimulating discussions, encouragement, and continued support.</p>
+<p>We thank <a href="https://www.hyperbolic.ai/">Hyperbolic</a> for providing free credits that helped support this research.</p>
+<p>We are grateful to the <a href="https://arprize.org">ARC Prize Foundation</a> for creating a platform that inspires and enables open-source progress toward AGI.</p>
+<p>Finally, <strong>Dibya Chakravorty</strong> wishes to thank his wife, <strong>Aurica Schön</strong>, and his son, <strong>Milan Schön</strong>, for their patience, support, and understanding while he devoted a significant portion of his free time to this project.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-ref1" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span>“On the measure of intelligence.”</span> Available: <a href="https://arxiv.org/abs/1911.01547">https://arxiv.org/abs/1911.01547</a></div>
+</div>
+<div id="ref-ref2" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span>“OpenAI o3 breakthrough high score on ARC-AGI-PUB.”</span> Available: <a href="https://arcprize.org/blog/oai-o3-pub-breakthrough">https://arcprize.org/blog/oai-o3-pub-breakthrough</a></div>
+</div>
+<div id="ref-ref3" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span>“ARC-AGI-2 overview with francois chollet.”</span> Available: <a href="https://www.youtube.com/watch?v=TWHezX43I-4">https://www.youtube.com/watch?v=TWHezX43I-4</a></div>
+</div>
+<div id="ref-ref4" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span>“ARC-AGI-2: A new challenge for frontier AI reasoning systems.”</span> Available: <a href="https://arxiv.org/abs/2505.11831">https://arxiv.org/abs/2505.11831</a></div>
+</div>
+<div id="ref-ref5" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline"><span>“ARC prize 2025: Technical report.”</span> Available: <a href="https://arxiv.org/abs/2601.10904">https://arxiv.org/abs/2601.10904</a></div>
+</div>
+<div id="ref-ref6" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline"><span>“Introducing o3 and o4-mini (see "toward agentic tool use" section and corresponding example traces).”</span> Available: <a href="https://openai.com/index/introducing-o3-and-o4-mini/">https://openai.com/index/introducing-o3-and-o4-mini/</a></div>
+</div>
+<div id="ref-ref7" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span>“Gpt-oss-120b &amp; gpt-oss-20b model card.”</span> Available: <a href="https://arxiv.org/abs/2508.10925">https://arxiv.org/abs/2508.10925</a></div>
+</div>
+<div id="ref-ref34" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span>“Code repository that allows reproducing the results in this post.”</span> Available: <a href="https://github.com/gutfeeling/arc-agi-2-submission">https://github.com/gutfeeling/arc-agi-2-submission</a></div>
+</div>
+<div id="ref-ref35" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span>“Data from the experiments in this post.”</span> Available: <a href="https://huggingface.co/datasets/arcagi2/arcagi2-agentic-coding-publication">https://huggingface.co/datasets/arcagi2/arcagi2-agentic-coding-publication</a></div>
+</div>
+<div id="ref-ref8" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span>“The emperor has no clothes: How to code claude code in 200 lines of code.”</span> Available: <a href="https://www.mihaileric.com/The-Emperor-Has-No-Clothes/">https://www.mihaileric.com/The-Emperor-Has-No-Clothes/</a></div>
+</div>
+<div id="ref-ref9" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span>“Getting 50.”</span> Available: <a href="https://blog.redwoodresearch.org/p/getting-50-sota-on-arc-agi-with-gpt">https://blog.redwoodresearch.org/p/getting-50-sota-on-arc-agi-with-gpt</a></div>
+</div>
+<div id="ref-ref10" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span>“Reasoning models don’t always say what they think.”</span> Available: <a href="https://www.anthropic.com/research/reasoning-models-dont-say-think">https://www.anthropic.com/research/reasoning-models-dont-say-think</a></div>
+</div>
+<div id="ref-ref11" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span>“Interleaved thinking - VLLM docs.”</span> Available: <a href="https://docs.vllm.ai/en/stable/features/interleaved_thinking/">https://docs.vllm.ai/en/stable/features/interleaved_thinking/</a></div>
+</div>
+<div id="ref-ref12" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span>“Interleaved thinking - claude docs (see the comparative example in "tool use without interleaved thinking" and "tool use with interleaved thinking").”</span> Available: <a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking">https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking</a></div>
+</div>
+<div id="ref-ref13" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span>“Differences in thinking across claude model versions.”</span> Available: <a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking#differences-in-thinking-across-model-versions">https://platform.claude.com/docs/en/build-with-claude/extended-thinking#differences-in-thinking-across-model-versions</a></div>
+</div>
+<div id="ref-ref14" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span>“Gemini 2.5: Pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities.”</span> Available: <a href="https://arxiv.org/abs/2507.06261">https://arxiv.org/abs/2507.06261</a></div>
+</div>
+<div id="ref-ref15" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span>“Interleaved thinking - z.AI developer documentation.”</span> Available: <a href="https://docs.z.ai/guides/capabilities/thinking-mode#interleaved-thinking">https://docs.z.ai/guides/capabilities/thinking-mode#interleaved-thinking</a></div>
+</div>
+<div id="ref-ref16" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span>“Interleaved thinking unlocks reliable MiniMax-M2 agentic capability.”</span> Available: <a href="https://www.minimax.io/news/why-is-interleaved-thinking-important-for-m2">https://www.minimax.io/news/why-is-interleaved-thinking-important-for-m2</a></div>
+</div>
+<div id="ref-ref17" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span>“Introducing kimi K2 thinking.”</span> Available: <a href="https://moonshotai.github.io/Kimi-K2/thinking.html">https://moonshotai.github.io/Kimi-K2/thinking.html</a></div>
+</div>
+<div id="ref-ref18" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span>“The bitter lesson.”</span> Available: <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">http://www.incompleteideas.net/IncIdeas/BitterLesson.html</a></div>
+</div>
+<div id="ref-ref20" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span>“Scoring script in the official ARC AGI benchmarking repository.”</span> Available: <a href="https://github.com/arcprize/arc-agi-benchmarking/blob/main/src/arc_agi_benchmarking/scoring/scoring.py">https://github.com/arcprize/arc-agi-benchmarking/blob/main/src/arc_agi_benchmarking/scoring/scoring.py</a></div>
+</div>
+<div id="ref-ref19" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span>“ARC prize verified - official testing policy.”</span> Available: <a href="https://arcprize.org/policy">https://arcprize.org/policy</a></div>
+</div>
+<div id="ref-ref28" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span>“GPT 5.2 system card.”</span> Available: <a href="https://openai.com/index/gpt-5-system-card-update-gpt-5-2/">https://openai.com/index/gpt-5-system-card-update-gpt-5-2/</a></div>
+</div>
+<div id="ref-ref21" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span>“Official GPT 5.2 XHigh results - huggingface.”</span> Available: <a href="https://huggingface.co/datasets/arcprize/arc_agi_v2_public_eval/blob/main/gpt-5-2-2025-12-11-thinking-xhigh/results.json">https://huggingface.co/datasets/arcprize/arc_agi_v2_public_eval/blob/main/gpt-5-2-2025-12-11-thinking-xhigh/results.json</a></div>
+</div>
+<div id="ref-ref33" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span>“GPT 5.2 xhigh score with the poetiq harness.”</span> Available: <a href="https://x.com/poetiq_ai/status/2003546910427361402?s=20">https://x.com/poetiq_ai/status/2003546910427361402?s=20</a></div>
+</div>
+<div id="ref-ref22" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span>“Icecuber’s 1st place solution + code and official documentation.”</span> Available: <a href="https://www.kaggle.com/competitions/abstraction-and-reasoning-challenge/writeups/icecuber-1st-place-solution-code-and-official-docu">https://www.kaggle.com/competitions/abstraction-and-reasoning-challenge/writeups/icecuber-1st-place-solution-code-and-official-docu</a></div>
+</div>
+<div id="ref-ref23" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span>“How i came in first on ARC-AGI-pub using sonnet 3.5 with evolutionary test-time compute.”</span> Available: <a href="https://jeremyberman.substack.com/p/how-i-got-a-record-536-on-arc-agi">https://jeremyberman.substack.com/p/how-i-got-a-record-536-on-arc-agi</a></div>
+</div>
+<div id="ref-ref24" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span>“ARC prize 2025 results &amp; analysis.”</span> Available: <a href="https://arcprize.org/blog/arc-prize-2025-results-analysis">https://arcprize.org/blog/arc-prize-2025-results-analysis</a></div>
+</div>
+<div id="ref-ref36" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[29] </div><div class="csl-right-inline"><span>“Does reinforcement learning really incentivize reasoning capacity in LLMs beyond the base model?”</span> Available: <a href="https://arxiv.org/abs/2504.13837">https://arxiv.org/abs/2504.13837</a></div>
+</div>
+<div id="ref-ref25" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[30] </div><div class="csl-right-inline"><span>“Wider or deeper? Scaling LLM inference-time compute with adaptive branching tree search.”</span> Available: <a href="https://arxiv.org/abs/2503.04412">https://arxiv.org/abs/2503.04412</a></div>
+</div>
+<div id="ref-ref26" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span>“How i got the highest score on ARC-AGI again swapping python for english.”</span> Available: <a href="https://jeremyberman.substack.com/p/how-i-got-the-highest-score-on-arc-agi-again">https://jeremyberman.substack.com/p/how-i-got-the-highest-score-on-arc-agi-again</a></div>
+</div>
+<div id="ref-ref27" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span>“Poetiq shatters ARC-AGI-2 state of the art at half the cost.”</span> Available: <a href="https://poetiq.ai/posts/arcagi_verified/">https://poetiq.ai/posts/arcagi_verified/</a></div>
+</div>
+<div id="ref-ref29" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span>“Provider variance: Introducing exacto.”</span> Available: <a href="https://openrouter.ai/announcements/provider-variance-introducing-exacto">https://openrouter.ai/announcements/provider-variance-introducing-exacto</a></div>
+</div>
+<div id="ref-ref30" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span>“Gpt-oss-120b tool calls - GitHub issue on VLLM repository.”</span> Available: <a href="https://github.com/vllm-project/vllm/issues/22337">https://github.com/vllm-project/vllm/issues/22337</a></div>
+</div>
+<div id="ref-ref37" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span>“Responses API patch that we used to reliably elicit interleaved thinking in GPT OSS 120B.”</span> Available: <a href="https://github.com/gutfeeling/arc-agi-2-submission/blob/master/src/vllm_patch/harmony_utils.py">https://github.com/gutfeeling/arc-agi-2-submission/blob/master/src/vllm_patch/harmony_utils.py</a></div>
+</div>
+<div id="ref-ref31" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span>“MALFORMED_FUNCTION_CALL finish reason happens too frequently with vertex AI - build with google AI forum.”</span> Available: <a href="https://discuss.ai.google.dev/t/malformed-function-call-finish-reason-happens-too-frequently-with-vertex-ai/93630">https://discuss.ai.google.dev/t/malformed-function-call-finish-reason-happens-too-frequently-with-vertex-ai/93630</a></div>
+</div>
+<div id="ref-ref32" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span>“K2-vendor-verifier.”</span> Available: <a href="https://github.com/MoonshotAI/K2-Vendor-Verifier">https://github.com/MoonshotAI/K2-Vendor-Verifier</a></div>
+</div>
+</div>
+</section>
+<section id="appendix" class="level2">
+<h2 class="anchored" data-anchor-id="appendix">Appendix</h2>
+<section id="system-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="system-prompt">System prompt</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tools</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## python</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Use this tool to execute Python code in your chain of thought. </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>When you send a message containing Python code to python, it will be executed in a stateful Jupyter notebook environment. The environment supports common third party libraries like numpy, scipy, shapely, networkx, scikit-image, more-itertools, pillow, python-constraint, ortools and z3-solver. python will respond with the output of the execution or time out after 120.0 seconds. </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">### Usage guideline</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Use the variables and functions already loaded in the Jupyter notebook instead of defining them yourself. The user message will provide a complete list of such variables and functions.</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Prefer to write reusable functions. These will persist in the stateful Jupyter notebook and can be referenced in later code snippets without having to define them again.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="solver-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="solver-prompt">Solver prompt</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>You are an expert ARC AGI puzzle solver. Please solve the puzzle given below.</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu"># Background information about ARC AGI puzzles</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Each task consists of a small number of demonstration examples (3.3 on average), and a small number of test examples (1 - 3).</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>Each example consists of an "input grid" and an "output grid". Each "grid" is a literal grid of colored squares There are 10 unique colors. A grid can be any height or width between 1x1 and 30x30, inclusive.</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>The color code is as follows:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>0 - black</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>1 - navy blue</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>2 - red</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>3 - green</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>4 - yellow</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>5 - gray</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>6 - pink</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>7 - orange</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>8 - sky blue</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>9 - maroon</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>When solving an evaluation task, a test-taker has access to the training examples for the task (both the input and output grids), as well as the input grid of the test examples for the task. The test-taker must construct on its own the output grid corresponding to the input grid of each test example. "Constructing the output grid" is done entirely from scratch, meaning that the test-taker must decide what the height and width of the output grid should be, what colors they should place on the grid, and where. The task is successfully solved if the test-taker can produce the exact correct answer on all test examples for the task (binary measure of success).</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>The mapping from integers (0-9) to color names is arbitrary and should be treated as categorical labels; the transformation rule never relies on the specific integer–color pairing.</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>ARC AGI puzzle solutions feel "natural" to humans. Natural rules tend to build on visual priors and small-number counting. They are visually immediate or prominent for humans. That is why humans from all educational backgrounds are able to solve these puzzles. Rules that depend on non-visual considerations (e.g. mathematics that's more advanced than small number counting) or inelegant mechanics (e.g. tie-breakers, complex conditional rules, special exceptions) are considered "unnatural."  </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>This doesn't mean puzzles have to be simple or easy. Common patterns that puzzles use to increase difficulty are:  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Rule composition:** multiple simple, natural rules are applied in sequence, with one transformation setting up the next.</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Contextual application:** a simple if/else based on a visually clear feature.</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**In-grid symbol definition:** certain shapes or patterns act as symbols whose meaning is established using the training examples and which control some aspect of the transformation. The meaning can even vary across training examples.</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Iterated steps:** a simple action is applied repeatedly (as in assembling pieces of a jigsaw), where each step constrains the next. Repetition is restricted to a small number.</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Approximate features**: Features that are easily detected by humans, but hard to detect using naive algorithms. Examples are slightly broken symmetry, slightly broken continuity, off-center symmetry axes, objects defined via 8-connectivity etc.</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Non-locality:** the solution requires applying changes to one region, with the changes depending on features in a different, distant region.</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="fu"># Puzzle to solve</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>{{puzzle}}</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="fu"># Task aids</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>You may execute code in the Jupyter notebook environment.</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>Variables available in the Jupyter notebook:</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`puzzle`</span>: A Python <span class="in">`dict`</span> containing the training and test grids. The key "train" contains the training examples in a list. Similarly, the key "test" contains the test examples as a list. Each training/test example is a dict containing keys "input" and "output". The values are the grids expressed as list of lists of integers (0 - 9). Access: <span class="in">`puzzle["train"][i]["input"]`</span>, <span class="in">`puzzle["train"][i]["output"]`</span>, <span class="in">`puzzle["test"][j]["input"]`</span>.</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>Your very first code execution should be <span class="in">`puzzle.keys()`</span> to check data access. </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>Don't print the <span class="in">`puzzle`</span> dict, because it prints out the grids that are already present in this user message and consumes valuable token budget.</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="fu"># Your task</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>Please solve the puzzle. Solving the puzzle means constructing a function <span class="in">`solution(grid: list[list[int]])`</span> that implements the transformation from input grid to output grid shown in the training examples. The solution must work on all training examples.</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="in">for idx, example in enumerate(puzzle["train"]):</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="in">    assert solution(example["input"]) == example["output"], f"Train example {idx}: mismatch"</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>The solution must generalize to the test input(s). Solutions that cheat by hardcoding the training example outputs are not acceptable.</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="fu"># Output format (STRICT)</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>Your response must contain a single Python code block fenced by ```python ... ``<span class="in">`. Must include a `</span>solution` function. Must be self-contained i.e. include all necessary imports and helper functions.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="full-list-of-libraries-installed-in-the-stateful-ipython-based-code-interpreter" class="level3">
+<h3 class="anchored" data-anchor-id="full-list-of-libraries-installed-in-the-stateful-ipython-based-code-interpreter">Full list of libraries installed in the stateful IPython based code interpreter</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>numpy</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>scipy</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>shapely</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>networkx</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>scikit-image</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>more-itertools</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>pillow</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>python-constraint</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ortools</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>z3-solver</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/pivotools\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
