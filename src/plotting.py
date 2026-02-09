@@ -396,7 +396,11 @@ def show_puzzle(
         </div>
     </div>
     """
-    return HTML(combined)
+
+    from IPython.display import Image
+
+    png_bytes = fig.to_image(format="png", scale=2)
+    return Image(data=png_bytes)
 
 
 # ---------------------------------------------------------------------------
@@ -807,18 +811,17 @@ def add_scatter_traces_to_subplot(
 
 def display_figure(fig: go.Figure, fig_key: str) -> None:
     """
-    Display a Plotly figure with interactivity controlled by style.yml.
-    
+    Display a Plotly figure as a static PNG image.
+
     Args:
         fig: The Plotly figure to display.
         fig_key: Key in style.yml figures section (e.g., "scatter_baseline_vs_interleaved",
                 "bar_baseline_vs_interleaved", "tool_calls_histogram", "puzzle").
-    
-    This helper applies the interactivity setting from style.yml when displaying
-    the figure, allowing per-figure control over whether plots are interactive or static.
     """
-    config = _plotly_config_for(fig_key)
-    fig.show(config=config)
+    from IPython.display import Image, display
+
+    png_bytes = fig.to_image(format="png", scale=2)
+    display(Image(data=png_bytes))
 
 
 # ---------------------------------------------------------------------------
