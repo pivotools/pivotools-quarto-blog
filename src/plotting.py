@@ -1169,10 +1169,9 @@ def create_baseline_interleaved_bars_panels(
     if x_range is not None:
         xaxis_update["range"] = x_range
     
-    # Compute explicit y range starting at 0
-    if y_range is None:
-        max_score = max(max(baseline_scores), max(interleaved_scores))
-        y_range = [0, max_score * 1.1]
+    # Explicit y range starting at 0
+    max_score = max(max(baseline_scores), max(interleaved_scores))
+    y_range = [0, y_range[1] if y_range is not None else max_score * 1.1]
     yaxis_update = {
         "title_text": axis_cfg.get("y_title", "Score [%]"),
         "type": "linear",
