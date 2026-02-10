@@ -1016,11 +1016,11 @@ def create_baseline_interleaved_scatter(
     y_range = axis_cfg.get("y_range")
     
     # Apply ranges if specified
-    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside"}
+    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": True, "zerolinecolor": "rgba(0,0,0,0.1)"}
     if x_range is not None:
         xaxis_update["range"] = x_range
     
-    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside"}
+    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": True, "zerolinecolor": "rgba(0,0,0,0.1)"}
     if y_range is not None:
         yaxis_update["range"] = y_range
     
@@ -1178,6 +1178,7 @@ def create_baseline_interleaved_bars_panels(
         "linecolor": "black",
         "mirror": True,
         "ticks": "outside",
+        "rangemode": "tozero",
     }
     if y_range is not None:
         yaxis_update["range"] = y_range
