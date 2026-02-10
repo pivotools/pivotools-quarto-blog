@@ -434,8 +434,8 @@ def tool_calls_histogram(
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
     )
-    fig.update_xaxes(showgrid=True, gridcolor="rgba(0,0,0,0.1)")
-    fig.update_yaxes(showgrid=True, gridcolor="rgba(0,0,0,0.1)")
+    fig.update_xaxes(showgrid=True, gridcolor="rgba(0,0,0,0.1)", showline=True, linecolor="black", mirror=True, ticks="outside")
+    fig.update_yaxes(showgrid=True, gridcolor="rgba(0,0,0,0.1)", showline=True, linecolor="black", mirror=True, ticks="outside")
     return fig
 
 
@@ -1016,11 +1016,11 @@ def create_baseline_interleaved_scatter(
     y_range = axis_cfg.get("y_range")
     
     # Apply ranges if specified
-    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)"}
+    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside"}
     if x_range is not None:
         xaxis_update["range"] = x_range
     
-    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)"}
+    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside"}
     if y_range is not None:
         yaxis_update["range"] = y_range
     
@@ -1112,7 +1112,11 @@ def create_baseline_interleaved_bars(
     xaxis_update = {
         "title_text": axis_cfg.get("x_title", "Model"),
         "showgrid": True,
-        "gridcolor": "rgba(0,0,0,0.1)"
+        "gridcolor": "rgba(0,0,0,0.1)",
+        "showline": True,
+        "linecolor": "black",
+        "mirror": True,
+        "ticks": "outside",
     }
     if x_range is not None:
         xaxis_update["range"] = x_range
@@ -1121,7 +1125,11 @@ def create_baseline_interleaved_bars(
         "title_text": axis_cfg.get("y_title", "Score [%]"),
         "type": "linear",
         "showgrid": True,
-        "gridcolor": "rgba(0,0,0,0.1)"
+        "gridcolor": "rgba(0,0,0,0.1)",
+        "showline": True,
+        "linecolor": "black",
+        "mirror": True,
+        "ticks": "outside",
     }
     if y_range is not None:
         yaxis_update["range"] = y_range
@@ -1152,7 +1160,11 @@ def create_baseline_interleaved_bars_panels(
     xaxis_update = {
         "title_text": axis_cfg.get("x_title", "Model"),
         "showgrid": False,
-        "gridcolor": "rgba(0,0,0,0.1)"
+        "gridcolor": "rgba(0,0,0,0.1)",
+        "showline": True,
+        "linecolor": "black",
+        "mirror": True,
+        "ticks": "outside",
     }
     if x_range is not None:
         xaxis_update["range"] = x_range
@@ -1161,7 +1173,11 @@ def create_baseline_interleaved_bars_panels(
         "title_text": axis_cfg.get("y_title", "Score [%]"),
         "type": "linear",
         "showgrid": True,
-        "gridcolor": "rgba(0,0,0,0.1)"
+        "gridcolor": "rgba(0,0,0,0.1)",
+        "showline": True,
+        "linecolor": "black",
+        "mirror": True,
+        "ticks": "outside",
     }
     if y_range is not None:
         yaxis_update["range"] = y_range
