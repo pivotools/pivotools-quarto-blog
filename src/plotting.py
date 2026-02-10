@@ -421,7 +421,10 @@ def tool_calls_histogram(
     height = layout_cfg.get("height", 400)
     width = layout_cfg.get("width", 520)
     bar_color = cfg.get("bar_color", "#D2691E")
-    fig = go.Figure(data=[go.Histogram(x=list(values), nbinsx=nbins, marker=dict(color=bar_color), hoverinfo="skip")])
+    # Darken fill colour for the border
+    _bc = bar_color.lstrip("#")
+    _darker = "#" + "".join(f"{max(0, int(int(_bc[i:i+2], 16) * 0.7)):02x}" for i in (0, 2, 4))
+    fig = go.Figure(data=[go.Histogram(x=list(values), nbinsx=nbins, marker=dict(color=bar_color, line=dict(color=_darker, width=1)), hoverinfo="skip")])
     fig.update_layout(
         xaxis_title="number of tool calls per turn",
         yaxis_title="count",
