@@ -1016,11 +1016,11 @@ def create_baseline_interleaved_scatter(
     y_range = axis_cfg.get("y_range")
     
     # Apply ranges if specified
-    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": True, "zerolinecolor": "rgba(0,0,0,0.1)"}
+    xaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": False}
     if x_range is not None:
         xaxis_update["range"] = x_range
     
-    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": True, "zerolinecolor": "rgba(0,0,0,0.1)"}
+    yaxis_update = {"type": "linear", "showgrid": True, "gridcolor": "rgba(0,0,0,0.1)", "showline": True, "linecolor": "black", "mirror": True, "ticks": "outside", "zeroline": True, "zerolinecolor": "rgba(0,0,0,0.1)", "zerolinewidth": 1}
     if y_range is not None:
         yaxis_update["range"] = y_range
     
@@ -1169,6 +1169,10 @@ def create_baseline_interleaved_bars_panels(
     if x_range is not None:
         xaxis_update["range"] = x_range
     
+    # Compute explicit y range starting at 0
+    if y_range is None:
+        max_score = max(max(baseline_scores), max(interleaved_scores))
+        y_range = [0, max_score * 1.1]
     yaxis_update = {
         "title_text": axis_cfg.get("y_title", "Score [%]"),
         "type": "linear",
@@ -1178,10 +1182,8 @@ def create_baseline_interleaved_bars_panels(
         "linecolor": "black",
         "mirror": True,
         "ticks": "outside",
-        "rangemode": "tozero",
+        "range": y_range,
     }
-    if y_range is not None:
-        yaxis_update["range"] = y_range
     
     fig.update_xaxes(**xaxis_update)
     fig.update_yaxes(**yaxis_update)

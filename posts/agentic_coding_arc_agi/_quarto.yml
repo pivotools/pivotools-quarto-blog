@@ -1,0 +1,28 @@
+project:
+  type: manuscript
+
+manuscript:
+  notebooks:
+    - "!index.qmd"
+
+
+format:
+  html:
+    toc: true
+    comments:
+      hypothesis: true
+  pdf: 
+    pdf-engine: xelatex
+  arxiv-pdf:
+    keep-tex: true
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \setkeys{Gin}{width=0.8\linewidth,keepaspectratio}
+        % Suppress "Source: Article Notebook" annotations from manuscript type
+        \renewcommand{\textsubscript}[1]{}
+        % Prevent callout boxes from breaking across pages
+        \AtBeginDocument{\tcbset{breakable/.code={}}}
+        % Enable line wrapping in code blocks
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
